@@ -7,7 +7,6 @@ import ru.inno.java.pro.task1.annotations.BeforeTest;
 import ru.inno.java.pro.task1.annotations.CsvSource;
 import ru.inno.java.pro.task1.annotations.Test;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -15,12 +14,6 @@ import java.util.Comparator;
 import java.util.List;
 
 public class TestRunner {
-  private static final Class<BeforeSuite> BEFORE_SUITE_CLASS = BeforeSuite.class;
-  private static final Class<AfterSuite> AFTER_SUITE_CLASS = AfterSuite.class;
-  private static final Class<BeforeTest> BEFORE_TEST_CLASS = BeforeTest.class;
-  private static final Class<AfterTest> AFTER_TEST_CLASS = AfterTest.class;
-  private static final Class<Test> TEST_CLASS = Test.class;
-  private static final Class<CsvSource> CSV_SOURCE_CLASS = CsvSource.class;
   public static final int TEST_PRIORITY_MIN = 1;
   public static final int TEST_PRIORITY_MAX = 10;
 
@@ -36,26 +29,26 @@ public class TestRunner {
     List<Method> afterTestMethods = new ArrayList<>();
 
     for (Method method : methods) {
-      if (method.isAnnotationPresent(BEFORE_SUITE_CLASS)) {
-        beforeSuiteMethod = getSingleStaticMethod(beforeSuiteMethod, method, BEFORE_SUITE_CLASS);
+      if (method.isAnnotationPresent(BeforeSuite.class)) {
+        beforeSuiteMethod = getSingleStaticMethod(beforeSuiteMethod, method, BeforeSuite.class);
       }
-      if (method.isAnnotationPresent(AFTER_SUITE_CLASS)) {
-        afterSuiteMethod = getSingleStaticMethod(afterSuiteMethod, method, AFTER_SUITE_CLASS);
+      if (method.isAnnotationPresent(AfterSuite.class)) {
+        afterSuiteMethod = getSingleStaticMethod(afterSuiteMethod, method, AfterSuite.class);
       }
-      if (method.isAnnotationPresent(BEFORE_TEST_CLASS)) {
+      if (method.isAnnotationPresent(BeforeTest.class)) {
         beforeTestMethods.add(method);
       }
-      if (method.isAnnotationPresent(AFTER_TEST_CLASS)) {
+      if (method.isAnnotationPresent(AfterTest.class)) {
         afterTestMethods.add(method);
       }
-      if (method.isAnnotationPresent(TEST_CLASS)) {
+      if (method.isAnnotationPresent(Test.class)) {
         testMethods.add(getTestMethod(method));
       }
     }
 
     invokeStaticMethodIfNotNull(beforeSuiteMethod);
 
-    testMethods.sort(Comparator.comparingInt(m -> m.getAnnotation(TEST_CLASS).priority()));
+    testMethods.sort(Comparator.comparingInt(m -> m.getAnnotation(Test.class).priority()));
 
     for (Method testMethod : testMethods) {
       invokeInstanceMethods(beforeTestMethods, instance);
@@ -102,14 +95,14 @@ public class TestRunner {
     if (isStaticMethod(checkMethod)) {
       String errorMessage = String.format("Метод %s: аннотация %s не применима к методам static",
           checkMethod.getName(),
-          TEST_CLASS.getSimpleName());
+          Test.class.getSimpleName());
       throw new IllegalArgumentException(errorMessage);
     }
-    int priority = checkMethod.getAnnotation(TEST_CLASS).priority();
+    int priority = checkMethod.getAnnotation(Test.class).priority();
     if (priority < TEST_PRIORITY_MIN || priority > TEST_PRIORITY_MAX) {
       String errorMessage = String.format("Метод %s: в аннотации %s указано недопустимое значение priority=%s (допустимые значения от %s до %s)"
           , checkMethod.getName()
-          , TEST_CLASS.getSimpleName()
+          , Test.class.getSimpleName()
           , priority
           , TEST_PRIORITY_MIN
           , TEST_PRIORITY_MAX);
@@ -122,15 +115,15 @@ public class TestRunner {
     return Modifier.isStatic(method.getModifiers());
   }
 
-  private static void invokeStaticMethodIfNotNull(Method method) throws InvocationTargetException, IllegalAccessException {
+  private static void invokeStaticMethodIfNotNull(Method method) throws ReflectiveOperationException {
     if (method != null) {
       method.invoke(null);
     }
   }
 
-  private static void invokeTestMethod(Method method, Object instance) throws InvocationTargetException, IllegalAccessException {
-    if (method.isAnnotationPresent(CSV_SOURCE_CLASS)) {
-      CsvSource csvSource = method.getAnnotation(CSV_SOURCE_CLASS);
+  private static void invokeTestMethod(Method method, Object instance) throws ReflectiveOperationException {
+    if (method.isAnnotationPresent(CsvSource.class)) {
+      CsvSource csvSource = method.getAnnotation(CsvSource.class);
       String[] values = csvSource.value().split(",\\s*");
       Class<?>[] parameterTypes = method.getParameterTypes();
       Object[] parameters = new Object[values.length];
@@ -141,7 +134,7 @@ public class TestRunner {
         } catch (IllegalArgumentException e) {
           String errorMessage = String.format("Метод %s, аннотация %s: %s",
               method.getName(),
-              CSV_SOURCE_CLASS.getSimpleName(),
+              CsvSource.class.getSimpleName(),
               e.getMessage());
           throw new IllegalArgumentException(errorMessage);
         }
@@ -153,7 +146,7 @@ public class TestRunner {
     }
   }
 
-  private static void invokeInstanceMethods(List<Method> methods, Object instance) throws InvocationTargetException, IllegalAccessException {
+  private static void invokeInstanceMethods(List<Method> methods, Object instance) throws ReflectiveOperationException {
     for (Method method : methods) {
       method.invoke(instance);
     }
