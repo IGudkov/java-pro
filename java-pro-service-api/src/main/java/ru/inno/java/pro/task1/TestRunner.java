@@ -24,7 +24,7 @@ public class TestRunner {
   public static final int TEST_PRIORITY_MIN = 1;
   public static final int TEST_PRIORITY_MAX = 10;
 
-  public static void runTests(Class<?> c) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+  public static void runTests(Class<?> c) throws ReflectiveOperationException {
     Object instance = c.getDeclaredConstructor().newInstance();
     Method[] methods = c.getDeclaredMethods();
 
