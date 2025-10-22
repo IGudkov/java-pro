@@ -110,7 +110,7 @@ public class App {
         .sorted(Comparator.comparingInt(Employee::getAge).reversed())
         .limit(3)
         .map(Employee::getName)
-        .collect(Collectors.toList());
+        .toList();
   }
 
   private static double getAverageAgeEngineers(List<Employee> employees) {
@@ -135,7 +135,7 @@ public class App {
   private static List<String> sortWordsByLengthAndAlphabetically(List<String> words) {
     return words.stream()
         .sorted(Comparator.comparingInt(String::length).thenComparing(Comparator.naturalOrder()))
-        .collect(Collectors.toList());
+        .toList();
   }
 
   private static String findLongestWordInArray(String[] arrayString) {
