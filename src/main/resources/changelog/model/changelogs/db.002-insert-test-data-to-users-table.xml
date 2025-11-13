@@ -1,0 +1,26 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns:pro="http://www.liquibase.org/xml/ns/pro" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        changelog/dbchangelog-4.27.xsd">
+
+    <changeSet id="002" author="igudkov">
+
+        <preConditions onFail="MARK_RAN">
+                <tableExists tableName="users"/>
+        </preConditions>
+
+        <sql>
+            insert into users (username) values ('MigrUser1');
+            insert into users (username) values ('MigrUser2');
+            insert into users (username) values ('MigrUser3');
+        </sql>
+
+        <rollback>
+            <sql>
+                delete from users where username in ('MigrUser1','MigrUser2','MigrUser3');
+            </sql>
+        </rollback>
+
+    </changeSet>
+
+</databaseChangeLog>
