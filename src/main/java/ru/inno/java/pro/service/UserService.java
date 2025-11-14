@@ -1,37 +1,49 @@
 package ru.inno.java.pro.service;
 
 import org.springframework.stereotype.Service;
-import ru.inno.java.pro.dao.UserDao;
-import ru.inno.java.pro.model.User;
+import ru.inno.java.pro.entity.User;
+import ru.inno.java.pro.repository.UserRepository;
 
-import java.sql.SQLException;
 import java.util.List;
 
 @Service
 public class UserService {
-  private final UserDao userDao;
+  private final UserRepository repository;
 
-  public UserService(UserDao userDao) {
-    this.userDao = userDao;
+  public UserService(UserRepository repository) {
+    this.repository = repository;
   }
 
-  public void createUser(User user) throws SQLException {
-    userDao.save(user);
+  public void createUser(User user) {
+    String username = user.getUsername();
+
+    if (username == null || username.isEmpty()) {
+      throw new IllegalArgumentException("username не может быть null или пустым");
+    }
+
+    User existingUser = repository.findByUsername(username).orElse(null);
+
+    if (existingUser != null) {
+      String details = String.format("Пользователь с username=%s уже существует", username);
+      throw new IllegalArgumentException(details);
+    }
+
+    repository.save(user);
   }
 
-  public void deleteUser(Long id) throws SQLException {
-    userDao.deleteById(id);
+  public void deleteUser(Long id) {
+    repository.deleteById(id);
   }
 
-  public User getUserById(Long id) throws SQLException {
-    return userDao.findById(id);
+  public User getUserById(Long id) {
+    return repository.findById(id).orElse(null);
   }
 
-  public User getUserByUserName(String userName) throws SQLException {
-    return userDao.findByUserName(userName);
+  public User getUserByUserName(String username) {
+    return repository.findByUsername(username).orElse(null);
   }
 
-  public List<User> getAllUsers() throws SQLException {
-    return userDao.findAll();
+  public List<User> getAllUsers() {
+    return repository.findAll();
   }
 }
