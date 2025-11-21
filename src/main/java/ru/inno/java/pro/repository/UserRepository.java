@@ -1,7 +1,7 @@
 package ru.inno.java.pro.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import ru.inno.java.pro.entity.User;
+import ru.inno.java.pro.model.entity.User;
 
 import java.util.Optional;
 

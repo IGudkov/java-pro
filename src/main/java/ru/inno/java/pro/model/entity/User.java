@@ -1,4 +1,4 @@
-package ru.inno.java.pro.entity;
+package ru.inno.java.pro.model.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

@@ -1,4 +1,16 @@
+server:
+  port: ${APP_PORT:8081}
+  shutdown: graceful
+  servlet:
+    context-path: ${APP_CONTEXT_PATH:/v${spring.application.version}}
+    encoding:
+      charset: UTF-8
+      force: true
+
 spring:
+  application:
+    name: java-pro-service-api
+    version: 1
   datasource:
     driverClassName: org.postgresql.Driver
     url: ${DB_URL}
