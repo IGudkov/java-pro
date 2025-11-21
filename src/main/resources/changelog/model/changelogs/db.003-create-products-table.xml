@@ -1,0 +1,41 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns:pro="http://www.liquibase.org/xml/ns/pro" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        changelog/dbchangelog-4.27.xsd">
+
+    <changeSet id="003" author="igudkov">
+
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="products"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="products" remarks="Продукты клиентов">
+            <column name="id" type="bigserial">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_products_id"/>
+            </column>
+            <column name="account_number" type="varchar(255)" remarks="Номер счета">
+                <constraints nullable="false"/>
+            </column>
+            <column name="balance" type="numeric(17,2)" remarks="Баланс">
+                <constraints nullable="false"/>
+            </column>
+            <column name="product_type" type="varchar(255)" remarks="Enum типов продуктов">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="bigint" remarks="Ссылка на пользователя">
+                <constraints foreignKeyName="fk_products_users_id"
+                             referencedTableName="users"
+                             referencedColumnNames="id"
+                             nullable="false"/>
+            </column>
+        </createTable>
+
+        <rollback>
+            <dropTable tableName="products"/>
+        </rollback>
+
+    </changeSet>
+
+</databaseChangeLog>

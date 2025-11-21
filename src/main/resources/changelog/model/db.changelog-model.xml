@@ -4,5 +4,7 @@
 
     <include file="changelogs/db.001-create-users-table.xml" relativeToChangelogFile="true"/>
     <include file="changelogs/db.002-insert-test-data-to-users-table.xml" relativeToChangelogFile="true"/>
+    <include file="changelogs/db.003-create-products-table.xml" relativeToChangelogFile="true"/>
+    <include file="changelogs/db.004-insert-test-data-to-products-table.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

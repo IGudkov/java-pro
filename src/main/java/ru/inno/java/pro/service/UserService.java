@@ -1,7 +1,7 @@
 package ru.inno.java.pro.service;
 
 import org.springframework.stereotype.Service;
-import ru.inno.java.pro.entity.User;
+import ru.inno.java.pro.model.entity.User;
 import ru.inno.java.pro.repository.UserRepository;
 
 import java.util.List;
