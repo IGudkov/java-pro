@@ -14,11 +14,12 @@ import java.util.List;
 @Service
 public class PaymentService {
   private final RestTemplate productRestTemplate;
+
   private final ObjectMapperUtils objectMapperUtils;
+
   @Value("${app.rest.clients.product.products-by-user-id-url}")
   private String productsByUserIdUrl;
-  @Value("${app.rest.clients.product.product-by-id-url}")
-  private String productByIdUrl;
+
   @Value("${app.rest.clients.product.execute-payment-url}")
   private String executePaymentUrl;
 

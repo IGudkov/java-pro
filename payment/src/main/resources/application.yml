@@ -21,5 +21,4 @@ app:
         connection-request-timeout: 1s
         read-timeout: 10s
         products-by-user-id-url: ${APP_PRODUCTS_BY_USER_ID_URL:/api/v1/products/user-id/{userId}}
-        product-by-id-url: ${APP_PRODUCT_BY_USER_ID_URL:/api/v1/products/product-id/{productId}}
         execute-payment-url: ${APP_PRODUCT_EXECUTE_PAYMENT_URL:/api/v1/products/execute-payment}
