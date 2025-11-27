@@ -1,0 +1,32 @@
+server:
+  port: ${APP_PORT:8081}
+  shutdown: graceful
+  servlet:
+    context-path: ${APP_CONTEXT_PATH:/${spring.application.name}}
+    encoding:
+      charset: UTF-8
+      force: true
+
+spring:
+  application:
+    name: product-service
+    version: 1
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    hikari:
+      schema: ${DB_SCHEMA}
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate:
+        format_sql: true
+  liquibase:
+    enabled: ${LIQUIBASE_ENABLED:true}
+    change-log: classpath:changelog/db.changelog-master.xml
+    default-schema: ${DB_SCHEMA}

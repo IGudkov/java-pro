@@ -1,0 +1,24 @@
+server:
+  port: ${APP_PORT:8081}
+  shutdown: graceful
+  servlet:
+    context-path: ${APP_CONTEXT_PATH:/${spring.application.name}}
+    encoding:
+      charset: UTF-8
+      force: true
+
+spring:
+  application:
+    name: payment-service
+    version: 1
+
+app:
+  rest:
+    clients:
+      product:
+        base-url: ${APP_PRODUCT_BASE_URL}
+        connect-timeout: 1s
+        connection-request-timeout: 1s
+        read-timeout: 10s
+        products-by-user-id-url: ${APP_PRODUCTS_BY_USER_ID_URL:/api/v1/products/user-id/{userId}}
+        execute-payment-url: ${APP_PRODUCT_EXECUTE_PAYMENT_URL:/api/v1/products/execute-payment}
